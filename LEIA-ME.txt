@@ -1,0 +1,22 @@
+NexusBot (Marco 1) - Fabric 1.21.11, Yarn, Java 21
+
+COMPILAR
+  1) Instale o JDK 21.
+  2) Abra a pasta no IntelliJ IDEA (ele importa o Gradle sozinho) e rode a tarefa "build",
+     OU no terminal, com Gradle 9.2+ instalado:  gradle build
+  3) O .jar fica em build/libs/nexusbot-0.1.0.jar  (use o que NAO tem "-sources")
+  4) Coloque na pasta mods junto com o Fabric API 0.141.1+1.21.11
+
+COMANDOS (precisa de OP)
+  /nexusbot spawn [nome] [x y z]
+  /nexusbot remove <bot|all>      /nexusbot list
+  /nexusbot mode <bot> <survival|follow|revenge|ffa|spy> [alvo]
+  /nexusbot difficulty <bot> <easy|medium|hard|expert|perfect>
+  /nexusbot style <bot> <nome> on|off     /nexusbot tech <bot> <nome> on|off
+  /nexusbot team create|add|remove|list ...
+  /nexusbot say <bot> <mensagem>
+
+CHAT: escreva o nome do bot + "me segue", "para", "ataca fulano", "o que ta fazendo", "espiona", "oi".
+
+STATUS: codigo NAO compilado. Mande os erros do gradle para correcao.
+Falta (proximos marcos): pathfinding, sobrevivencia/caca/fornalha, construcao, TNT/grief, mace avancado, elytra, kits.
