@@ -104,7 +104,7 @@ public class BotManager {
 
     private static void follow(FakeBot bot, LivingEntity t) {
         BotInput in = bot.input; in.releaseMovement(); in.attack = false; in.use = false; in.hotbarSlot = -1;
-        Vec3d d = t.getPos().subtract(bot.getPos());
+        Vec3d d = Util.pos(t).subtract(Util.pos(bot));
         in.yaw = (float) (Math.toDegrees(Math.atan2(d.z, d.x)) - 90);
         in.pitch = 0;
         double dist = d.horizontalLength();

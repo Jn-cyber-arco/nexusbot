@@ -13,7 +13,7 @@ public class SpyController {
 
     public void tick(PlayerEntity self, LivingEntity target, BotInput in, ServerPlayerEntity owner) {
         in.releaseMovement(); in.attack = false; in.use = false; in.hotbarSlot = -1;
-        Vec3d toBot = self.getPos().subtract(target.getPos()).multiply(1, 0, 1);
+        Vec3d toBot = com.nexus.bot.Util.pos(self).subtract(com.nexus.bot.Util.pos(target)).multiply(1, 0, 1);
         double dist = toBot.length();
         Vec3d look = target.getRotationVec(1f).multiply(1, 0, 1).normalize();
         boolean inFov = dist > 0.01 && look.dotProduct(toBot.normalize()) > 0.3;

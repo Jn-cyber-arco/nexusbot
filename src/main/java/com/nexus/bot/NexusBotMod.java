@@ -7,7 +7,9 @@ import com.nexus.bot.ai.BotConfig;
 import com.nexus.bot.body.FakeBot;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.command.argument.BlockPosArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -22,11 +24,16 @@ import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class NexusBotMod implements ModInitializer {
+    public static MinecraftServer SERVER;
+
     @Override
     public void onInitialize() {
         CommandRegistrationCallback.EVENT.register((d, reg, env) -> register(d));
-        ServerMessageEvents.CHAT_MESSAGE.register((message, sender, params) ->
-            BotManager.onChat(sender.getServer(), sender, message.getSignedContent()));
+        ServerLifecycleEvents.SERVER_STARTING.register(srv -> SERVER = srv);
+        ServerLifecycleEvents.SERVER_STOPPED.register(srv -> { SERVER = null; BotManager.BOTS.clear(); });
+        ServerMessageEvents.CHAT_MESSAGE.register((message, sender, params) -> {
+            if (SERVER != null) BotManager.onChat(SERVER, sender, message.getSignedContent());
+        });
     }
 
     private static int reply(CommandContext<ServerCommandSource> c, String msg) {
@@ -45,7 +52,7 @@ public class NexusBotMod implements ModInitializer {
     private static FakeBot bot(CommandContext<ServerCommandSource> c) { return BotManager.BOTS.get(StringArgumentType.getString(c, "bot")); }
 
     private void register(CommandDispatcher<ServerCommandSource> d) {
-        var root = literal("nexusbot").requires(s -> s.hasPermissionLevel(2));
+        var root = literal("nexusbot");
 
         // spawn [nome] [x y z]
         root.then(literal("spawn")
