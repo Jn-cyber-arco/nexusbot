@@ -11,7 +11,6 @@ import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Uuids;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.function.Consumer;
@@ -19,7 +18,7 @@ import java.util.function.Consumer;
 /** Jogador falso no servidor (estilo Carpet). */
 public class FakeBot extends ServerPlayerEntity {
     public final BotInput input = new BotInput();
-    public final BotConfig config = new BotConfig();
+    public BotConfig config = new BotConfig();
     public Consumer<FakeBot> brain = b -> {};
     public Consumer<DamageSource> onDeathHook = s -> {};
 
@@ -27,8 +26,7 @@ public class FakeBot extends ServerPlayerEntity {
         super(server, world, profile, SyncedClientOptions.createDefault());
     }
 
-    public static FakeBot spawn(MinecraftServer server, ServerWorld world, String name, Vec3d pos) {
-        GameProfile profile = new GameProfile(Uuids.getOfflinePlayerUuid(name), name);
+    public static FakeBot spawn(MinecraftServer server, ServerWorld world, GameProfile profile, Vec3d pos) {
         FakeBot bot = new FakeBot(server, world, profile);
         bot.refreshPositionAndAngles(pos.x, pos.y, pos.z, 0f, 0f);
         server.getPlayerManager().onPlayerConnect(new FakeConnection(), bot, ConnectedClientData.createDefault(profile, false));
@@ -53,7 +51,12 @@ public class FakeBot extends ServerPlayerEntity {
         this.setYaw(in.yaw); this.setPitch(in.pitch);
         this.setHeadYaw(in.yaw); this.setBodyYaw(in.yaw);
         if (in.hotbarSlot >= 0 && in.hotbarSlot < 9) this.getInventory().setSelectedSlot(in.hotbarSlot);
-        if (in.use) { if (!this.isUsingItem()) this.setCurrentHand(Hand.OFF_HAND); }
+
+        if (in.throwItem) {
+            this.interactionManager.interactItem(this, this.getEntityWorld(), this.getMainHandStack(), Hand.MAIN_HAND);
+        }
+        if (in.useMain) { if (!this.isUsingItem()) this.setCurrentHand(Hand.MAIN_HAND); }
+        else if (in.use) { if (!this.isUsingItem()) this.setCurrentHand(Hand.OFF_HAND); }
         else if (this.isUsingItem()) this.clearActiveItem();
     }
 

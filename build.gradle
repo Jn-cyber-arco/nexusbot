@@ -20,5 +20,5 @@ processResources {
     filesMatching('fabric.mod.json') { expand 'version': project.version }
 }
 
-tasks.withType(JavaCompile).configureEach { options.release = 21 }
+tasks.withType(JavaCompile).configureEach { options.release = 21; options.encoding = 'UTF-8' }
 java { sourceCompatibility = JavaVersion.VERSION_21; targetCompatibility = JavaVersion.VERSION_21 }

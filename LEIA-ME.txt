@@ -1,22 +1,25 @@
-NexusBot (Marco 1) - Fabric 1.21.11, Yarn, Java 21
+NexusBot v3 - Fabric 1.21.11 (Yarn), Java 21
+CODIGO NAO TESTADO EM JOGO. Compile pelo GitHub Actions e mande os erros.
 
-COMPILAR
-  1) Instale o JDK 21.
-  2) Abra a pasta no IntelliJ IDEA (ele importa o Gradle sozinho) e rode a tarefa "build",
-     OU no terminal, com Gradle 9.2+ instalado:  gradle build
-  3) O .jar fica em build/libs/nexusbot-0.1.0.jar  (use o que NAO tem "-sources")
-  4) Coloque na pasta mods junto com o Fabric API 0.141.1+1.21.11
+KITS (pasta nexusbotkit, criada sozinha na pasta do jogo/servidor, com exemplos: pvp, nulls, elytra, builder, grief)
+  /nexusbot givekit <kit> <jogador|bot>     /nexusbot kits     /nexusbot reloadkits
+  Formato do .json:  {"clear":true,"items":[{"slot":"hotbar.0","item":"netherite_sword[enchantments={sharpness:5}]","count":1}]}
+  Slots: armor.head/chest/legs/feet, weapon.offhand, hotbar.0-8, inventory.0-26.  "item" usa a sintaxe de /give da 1.21.
 
-COMANDOS (precisa de OP)
-  /nexusbot spawn [nome] [x y z]
-  /nexusbot remove <bot|all>      /nexusbot list
-  /nexusbot mode <bot> <survival|follow|revenge|ffa|spy> [alvo]
-  /nexusbot difficulty <bot> <easy|medium|hard|expert|perfect>
-  /nexusbot style <bot> <nome> on|off     /nexusbot tech <bot> <nome> on|off
-  /nexusbot team create|add|remove|list ...
-  /nexusbot say <bot> <mensagem>
+NULLS:  /nexusbot spawnullportal [x y z] <qtd>
+  /nexusbot settings nullnick <min> <max>
+  /nexusbot settings nullnickstyle <mixed|underscore|dot|random>
+  /nexusbot settings nullkit <kit>
 
-CHAT: escreva o nome do bot + "me segue", "para", "ataca fulano", "o que ta fazendo", "espiona", "oi".
+SPAWN:  /nexusbot spawn [nome] [x y z]  (kit padrao: settings defaultkit)  |  /nexusbot spawnsurvival [nome] [x y z]
+  Se o nick for de uma conta real, o bot usa a skin dessa conta (precisa de internet). Nulls usam skin preta.
 
-STATUS: codigo NAO compilado. Mande os erros do gradle para correcao.
-Falta (proximos marcos): pathfinding, sobrevivencia/caca/fornalha, construcao, TNT/grief, mace avancado, elytra, kits.
+LOGIN: se o servidor tiver os comandos /register e /login (SimpleLogin etc.), o bot registra com senha aleatoria
+  (salva em config/nexusbot-auth.json) e faz /login. /nexusbot auth <bot> mostra a senha. settings autologin on|off.
+
+CONSTRUCAO: /nexusbot build <bot> <casa|base|torre|ponte|piramide|random>  (bot precisa de blocos: kit builder)
+GRIEF: desligado de fabrica. Precisa de DUAS chaves: /nexusbot settings grief on  E  /nexusbot grief <bot> on
+UI: /nexusbot ui (configuracoes)  |  /nexusbot teamui <time>
+TIMES: toque num chifre de cabra estando num time -> bots do time atacam quem voce esta mirando.
+SURVIVAL: madeira, pedra, comida, ferro, diamante, portal (obsidiana de lava), debris, netherite (precisa do molde: Bastion nao implementado).
+NAO IMPLEMENTADO: craft da Maca (Trial Chamber), Bastion, chestplate swapping, pearl catching.

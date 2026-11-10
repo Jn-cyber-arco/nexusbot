@@ -1,5 +1,7 @@
 package com.nexus.bot.ai;
 
+import com.mojang.authlib.properties.Property;
+import net.minecraft.util.math.Vec3d;
 import java.util.*;
 
 public class BotConfig {
@@ -14,13 +16,18 @@ public class BotConfig {
     public Difficulty difficulty = Difficulty.HARD;
     public String team = null;
     public String followTarget = null;
-    public String owner = null;          // quem recebe os avisos do modo espiao
-    public boolean griefAllowed = false; // desligado por padrao
+    public String owner = null;
+    public String forcedTarget = null;
+    public long forcedUntil = 0;
+    public boolean isNull = false;
+    public boolean chat = true;
+    public boolean griefAllowed = false;   // chave 1 do grief (a chave 2 e o settings "grief")
+    public int phaseOrd = 0;               // fase de sobrevivencia salva (sobrevive ao respawn)
+    public Property skin = null;
+    public Vec3d home = null;
 
-    public final Set<String> styles = new HashSet<>(List.of("sword", "axe", "shield", "mace", "windcharge"));
-    public final Set<String> techniques = new HashSet<>(List.of(
-        "wtap", "stap", "strafing", "critchain", "jumpreset", "hitselect", "peakcrit", "blockhit", "stunslam"));
+    public final Set<String> off = new HashSet<>();
 
-    public boolean style(String s) { return styles.contains(s); }
-    public boolean tech(String t) { return techniques.contains(t); }
+    public boolean tech(String t) { return Settings.on(t) && !off.contains(t); }
+    public boolean style(String s) { return Settings.on(s) && !off.contains(s); }
 }
