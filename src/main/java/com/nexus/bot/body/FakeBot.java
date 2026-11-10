@@ -21,6 +21,7 @@ public class FakeBot extends ServerPlayerEntity {
     public BotConfig config = new BotConfig();
     public Consumer<FakeBot> brain = b -> {};
     public Consumer<DamageSource> onDeathHook = s -> {};
+    private FakeConnection conn;
 
     private FakeBot(MinecraftServer server, ServerWorld world, GameProfile profile) {
         super(server, world, profile, SyncedClientOptions.createDefault());
@@ -29,7 +30,8 @@ public class FakeBot extends ServerPlayerEntity {
     public static FakeBot spawn(MinecraftServer server, ServerWorld world, GameProfile profile, Vec3d pos) {
         FakeBot bot = new FakeBot(server, world, profile);
         bot.refreshPositionAndAngles(pos.x, pos.y, pos.z, 0f, 0f);
-        server.getPlayerManager().onPlayerConnect(new FakeConnection(), bot, ConnectedClientData.createDefault(profile, false));
+        bot.conn = new FakeConnection();
+        server.getPlayerManager().onPlayerConnect(bot.conn, bot, ConnectedClientData.createDefault(profile, false));
         bot.setHealth(20f);
         return bot;
     }
@@ -38,6 +40,7 @@ public class FakeBot extends ServerPlayerEntity {
     public void tick() {
         brain.accept(this);
         applyInput();
+        if (conn != null && this.age % 20 == 0) conn.drain();
         try { super.tick(); this.playerTick(); } catch (NullPointerException ignored) {}
     }
 

@@ -6,5 +6,6 @@
   "description": "Bots de PvP e sobrevivencia com chat em portugues.",
   "environment": "*",
   "entrypoints": { "main": ["com.nexus.bot.NexusBotMod"] },
+  "mixins": ["nexusbot.mixins.json"],
   "depends": { "fabricloader": ">=0.18.0", "minecraft": "~1.21.11", "java": ">=21", "fabric-api": "*" }
 }

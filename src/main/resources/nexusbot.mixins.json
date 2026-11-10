@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.nexus.bot.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ClientConnectionAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
