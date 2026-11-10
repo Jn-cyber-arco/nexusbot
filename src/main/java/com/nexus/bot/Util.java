@@ -26,7 +26,7 @@ public class Util {
 
     /** Executa um comando como se fosse o console (silencioso). */
     public static void run(MinecraftServer server, String cmd) {
-        try { server.getCommandManager().executeWithPrefix(server.getCommandSource().withSilent(), cmd); }
+        try { server.getCommandManager().getDispatcher().execute(cmd, server.getCommandSource().withSilent()); }
         catch (Exception e) { e.printStackTrace(); }
     }
 }
